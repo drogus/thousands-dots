@@ -5,7 +5,7 @@
  */
 var ProjectionHelperOverlay = function(map) {
   google.maps.OverlayView.call(this);
-  this.set_map(map);
+  this.setMap(map);
 };
 
 ProjectionHelperOverlay.prototype = new google.maps.OverlayView();
@@ -87,7 +87,7 @@ activetile.TileOverlay = function(options) {
     this.x = parseInt(this.parentTile.style.left);
     this.y = parseInt(this.parentTile.style.top);
   }
-  this.set_map(options.map);
+  this.setMap(options.map);
 
   var self = this;
   google.maps.event.addListener(this, 'ready', function() {
@@ -124,7 +124,7 @@ activetile.TileOverlay.prototype.draw = function() {
     div.appendChild(img);
 
     // Then add the overlay to the DOM
-    var panes = this.get_panes();
+    var panes = this.getPanes();
     panes.overlayLayer.appendChild(div);
   }
 
@@ -136,14 +136,14 @@ activetile.TileOverlay.prototype.draw = function() {
 
 activetile.TileOverlay.prototype.getArgs = function() {
 
-  var projection = this.get_projection();  var north_west = projection.fromDivPixelToLatLng(new google.maps.Point(this.x, this.y));
+  var projection = this.getProjection();  var north_west = projection.fromDivPixelToLatLng(new google.maps.Point(this.x, this.y));
   var south_east = projection.fromDivPixelToLatLng(new google.maps.Point(this.x + 256, this.y + 256));
   var args = [];
   args.push("area[lat1]=" + north_west.lat());
   args.push("area[lat2]=" + south_east.lat());
   args.push("area[lng1]=" + north_west.lng());
   args.push("area[lng2]=" + south_east.lng());
-  args.push("zoom=" + this.map.get_zoom());
+  args.push("zoom=" + this.map.getZoom());
 
   args = args.join("&");
 
@@ -171,7 +171,7 @@ activetile.TileOverlay.prototype.remove = function() {
   }
 };
 
-activetile.TileOverlay.prototype.get_position = function() {
+activetile.TileOverlay.prototype.getPosition = function() {
  return this.latlng_;
 };
 
@@ -377,7 +377,7 @@ activetile.DataMap = function(options) {
 
   this.projectionHelper = new ProjectionHelperOverlay(this.map);
   google.maps.event.addListener(this.projectionHelper, 'ready', function(){
-      self.projection = this.get_projection();
+      self.projection = this.getProjection();
   });
 };
 
@@ -429,7 +429,7 @@ activetile.DataMap.prototype.process = function() {
     var opts = this.loadQueue.shift();
     if(opts) {
       var tile = new activetile.TileOverlay(opts);
-      tile.set_map(this.map);
+      tile.setMap(this.map);
       this.tiles.push(tile);
     }
     toLoad -= 1;
@@ -481,7 +481,7 @@ activetile.DataMap.prototype.hideTiles = function() {
 activetile.DataMap.prototype.removeTiles = function() {
   for(var i = 0; i < this.tiles.length; i++) {
     var tile = this.tiles[i];
-    tile.set_map(null);
+    tile.setMap(null);
   }
   this.tiles = [];
   this.onTilesRemove();
